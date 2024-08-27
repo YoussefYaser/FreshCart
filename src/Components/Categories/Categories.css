@@ -1,0 +1,29 @@
+.categories{
+    animation-name: categories;
+    animation-duration: 1s;
+    animation-fill-mode: forwards;
+}
+
+@keyframes categories{
+    0%{
+        opacity: 0;
+    }
+    100%{
+        opacity: 100%;
+    }
+}
+
+.categories .row .inner img{
+    height: 350px;
+}
+
+.categories .row .inner{
+    transition: 0.3s;
+}
+
+.categories .row .inner:hover{
+    transform: scale(1.05);
+    box-shadow: 0 0.5rem 2.5rem rgb(0, 0, 0);
+    cursor: pointer;
+}
+
