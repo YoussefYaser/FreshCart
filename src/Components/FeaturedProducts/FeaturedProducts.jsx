@@ -9,11 +9,13 @@ import { Link } from 'react-router-dom';
 export default function FeaturedProducts() {
 
     
-    let { data : response, isLoading, isError, error } = useQuery({
+    let { data : response, isLoading, isError, error,  } = useQuery({
         queryKey: ['home'],
         queryFn: getProducts,
         select : (data)=>data.data
     });
+
+
 
 
     if (isLoading) {

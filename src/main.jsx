@@ -7,17 +7,21 @@ import './index.css'
 import AuthContextProvider from './Context/Authentication/AuthenticationContext.jsx'
 import { Provider } from 'react-redux'
 import { store } from './libs/store.js'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
+const queryClient = new QueryClient();
 
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <>
     
+    <QueryClientProvider client={queryClient}>
       <Provider store={store}>
         <AuthContextProvider>
           < App />
         </AuthContextProvider>  
       </Provider>
+    </QueryClientProvider>
 
   </>,
 )

@@ -14,14 +14,34 @@ import ProductsBy from './Components/ProductsBy/ProductsBy'
 import NotFound from './Components/NotFound/NotFound'
 import ResetPassword from './Components/ResetPassword/ResetPassword'
 import Wishlist from './Components/Wishlist/Wishlist'
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { QueryClientProvider, useQuery } from '@tanstack/react-query'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
+import { useDispatch } from 'react-redux'
+import getWishlist from './jsFunctions/Api/getWishlist'
+import { useEffect } from 'react'
+import { setWishlistItems } from './libs/slices/wishlistSlice'
 
 
-const queryClient = new QueryClient();
 
 export default function App() {
+
+
+  const dispatch = useDispatch();
+
+  let { data: response, isSuccess } = useQuery({
+    queryKey: ['wishlist'],
+    queryFn: getWishlist,
+    select: (data) => data.data
+  });
+
+  useEffect(() => {
+    if (isSuccess) {
+      dispatch(setWishlistItems(response.data.map((elem) => elem.id)));
+    }
+  }, [isSuccess]);
+
 
   const routes = createHashRouter([
     {
@@ -31,12 +51,12 @@ export default function App() {
         { path: '/products', element: <ProtectedRoute><Products></Products></ProtectedRoute> },
         { path: '/categories', element: <ProtectedRoute><Categories></Categories></ProtectedRoute> },
         { path: '/brands', element: <ProtectedRoute><Brands></Brands></ProtectedRoute> },
-        { path: '/productsBy/:by/:id', element: <ProductsBy></ProductsBy> },
+        { path: '/productsBy/:by/:id', element: <ProtectedRoute><ProductsBy></ProductsBy></ProtectedRoute> },
         { path: '/register', element: <Register></Register> },
         { path: '/login', element: <Login></Login> },
         { path: '/resetPassword', element: <ResetPassword></ResetPassword> },
         { path: 'productDetails/:id/:categoryId', element: <ProtectedRoute><ProductDetails></ProductDetails></ProtectedRoute> },
-        { path: '/wishlist', element: <Wishlist></Wishlist> },
+        { path: '/wishlist', element: <ProtectedRoute><Wishlist></Wishlist></ProtectedRoute> },
         { path: '*', element: <NotFound></NotFound> }
       ]
     }
@@ -46,9 +66,8 @@ export default function App() {
 
   return (
     <>
-      <QueryClientProvider client={queryClient}>
-        <RouterProvider router={routes}></RouterProvider>
-      </QueryClientProvider>
+      <RouterProvider router={routes}></RouterProvider>
+      <ReactQueryDevtools initialIsOpen={false} />
       <ToastContainer></ToastContainer>
     </>
   )

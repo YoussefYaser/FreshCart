@@ -22,12 +22,13 @@ export default function Cart() {
     );
 
     
-    let {mutate, data, isPending} = useMutation(
+    let {mutate, isPending} = useMutation(
         {
             mutationFn : deleteCart, 
             onSuccess : ()=>{
                 queryClient.invalidateQueries({queryKey : ['cart']});
-            }
+            },
+            
         } 
     );
 

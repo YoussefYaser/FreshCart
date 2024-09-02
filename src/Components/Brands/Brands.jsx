@@ -3,8 +3,10 @@ import './Brands.css'
 import getBrands from '../../jsFunctions/Api/getBrands'
 import ApiLoading from '../../Components/Api Loading/ApiLoading'
 import { Link} from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query';
 
 export default function Brands() {
+
 
     let { data: response, isLoading, isError, error } = useQueryBrands(getBrands);
 
