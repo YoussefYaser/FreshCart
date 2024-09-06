@@ -8,9 +8,13 @@ import ApiLoading from '../Api Loading/ApiLoading'
 import verifyCode from '../../jsFunctions/Api/verifyCode'
 import addNewPassword from '../../jsFunctions/Api/addNewPassword'
 import { useNavigate } from 'react-router-dom'
+import { NoDark } from '../../Context/Darkmode/DarkmodeContext'
+import useNoDark from '../../Hooks/useNoDark'
 
 
 export default function ResetPassword() {
+
+    let {noDark} = useNoDark();
 
     let navigate = useNavigate();
 
@@ -89,8 +93,8 @@ export default function ResetPassword() {
                     <input type="email" id='email' className=" form-control mb-3" placeholder="Enter Your Email" onChange={formikEmail.handleChange} onBlur={formikEmail.handleBlur}/>
                     {formikEmail.errors.email && formikEmail.touched.email?<div className="alert alert-danger z-3 py-2" role="alert">{formikEmail.errors.email}</div>:''}
 
-                    <button type='submit' className=' btn d-block ms-auto'>Submit</button>
-                    {isErrorEmail?<div className="alert alert-danger z-3 py-2 mt-2" role="alert">{errorEmail.response.data.message}</div>:''}
+                    <button type='submit' className={` btn d-block ms-auto ${noDark}`}>Submit</button>
+                    {isErrorEmail?<div className={`alert alert-danger z-3 py-2 mt-2 ${noDark}`} role="alert">{errorEmail.response.data.message}</div>:''}
                     
                 </form>
             </div>:''}
@@ -105,8 +109,8 @@ export default function ResetPassword() {
                     </label>
                     <input type="text" id='resetCode' className=" form-control mb-3" placeholder="Enter Rest Code" onChange={formikCode.handleChange} onBlur={formikCode.handleBlur}/>
 
-                    <button type='submit' className=' btn d-block ms-auto'>Verify</button>
-                    {isErrorCode?<div className="alert alert-danger z-3 py-2 mt-2" role="alert">{errorCode.response.data.message}</div>:''}
+                    <button type='submit' className={` btn d-block ms-auto ${noDark}`}>Verify</button>
+                    {isErrorCode?<div className={`alert alert-danger z-3 py-2 mt-2 ${noDark}`} role="alert">{errorCode.response.data.message}</div>:''}
 
                 </form>
             </div>:''}
@@ -128,8 +132,8 @@ export default function ResetPassword() {
                     <input type="text" id='newPassword' className=" form-control mb-3" placeholder="Enter Your New Password" onChange={formikNew.handleChange} onBlur={formikNew.handleBlur}/>
                     {formikNew.errors.newPassword && formikNew.touched.newPassword?<div className="alert alert-danger z-3 py-2" role="alert">{formikNew.errors.newPassword}</div>:''}
 
-                    <button type='submit' className=' btn d-block ms-auto'>Reset</button>
-                    {isErrorNew?<div className="alert alert-danger z-3 py-2 mt-2" role="alert">{errorNew.response.data.message}</div>:''}
+                    <button type='submit' className={` btn d-block ms-auto ${noDark}`}>Reset</button>
+                    {isErrorNew?<div className={`alert alert-danger z-3 py-2 mt-2 ${noDark}`} role="alert">{errorNew.response.data.message}</div>:''}
 
                 </form>
             </div>:''}

@@ -67,5 +67,36 @@
 
 .products .filter .filter-bar span{
     border: 2px solid black;
+}
 
+.products .search{
+    transition: 0.3s;
+    padding: 0 1rem !important;
+}
+
+.products .search button{
+    background-color: #3ad13a;
+    color: #fff;
+}
+
+.products .search button:hover{
+    background-color: #78e878;
+}
+
+.products .search input:focus{
+    box-shadow: none;
+    border-color: #3ad13a;
+    caret-color: #3ad13a;
+}
+
+@media(max-width : 576px){
+    .products .search{
+        width: 100% !important;
+        flex-wrap: wrap !important;
+        padding: 0 0.5rem !important;
+    }
+
+    .products .search button{
+        width: 100%;
+    }
 }

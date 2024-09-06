@@ -1,3 +1,20 @@
+.slick-slide{
+    animation-name: slide-show;
+    animation-duration: 1s;
+    animation-fill-mode: forwards;
+}
+
+@keyframes slide-show{
+    0%{
+        opacity: 0;
+    }
+    100%{
+        opacity: 1;
+    }
+}
+
+
+
 .slick-slide img {
     display: block;
     height: 300px !important;

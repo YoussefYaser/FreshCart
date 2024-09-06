@@ -3,7 +3,7 @@ import './App.css'
 import Layout from './Components/Layout/Layout'
 import Register from './Components/Register/Register'
 import Home from './Components/Home/Home'
-import Cart from './Components/Cart/Cart'
+// import Cart from './Components/Cart/Cart'
 import Products from './Components/Products/Products'
 import Categories from './Components/Categories/Categories'
 import Brands from './Components/Brands/Brands'
@@ -20,20 +20,28 @@ import 'react-toastify/dist/ReactToastify.css';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { useDispatch } from 'react-redux'
 import getWishlist from './jsFunctions/Api/getWishlist'
-import { useEffect } from 'react'
+import { lazy, Suspense, useContext, useEffect } from 'react'
 import { setWishlistItems } from './libs/slices/wishlistSlice'
+import ApiLoading from './Components/Api Loading/ApiLoading'
+import LoadingRegister from './Components/Loading register/LoadingRegister'
+import Darkmode from './Components/Darkmode/Darkmode'
+import DarkmodeContext from './Context/Darkmode/DarkmodeContext'
+import { authentication } from './Context/Authentication/AuthenticationContext'
 
-
+let Cart = lazy(()=> import('./Components/Cart/Cart'));
 
 export default function App() {
 
+  let{isLogin} = useContext(authentication);
 
   const dispatch = useDispatch();
+
 
   let { data: response, isSuccess } = useQuery({
     queryKey: ['wishlist'],
     queryFn: getWishlist,
-    select: (data) => data.data
+    select: (data) => data.data,
+    enabled : isLogin
   });
 
   useEffect(() => {
@@ -47,7 +55,7 @@ export default function App() {
     {
       path: '/', element: <Layout></Layout>, children: [
         { index: true, element: <ProtectedRoute><Home></Home></ProtectedRoute> },
-        { path: '/cart', element: <ProtectedRoute><Cart></Cart></ProtectedRoute> },
+        { path: '/cart', element: <ProtectedRoute><Suspense fallback={<ApiLoading></ApiLoading>}><Cart></Cart></Suspense></ProtectedRoute> },
         { path: '/products', element: <ProtectedRoute><Products></Products></ProtectedRoute> },
         { path: '/categories', element: <ProtectedRoute><Categories></Categories></ProtectedRoute> },
         { path: '/brands', element: <ProtectedRoute><Brands></Brands></ProtectedRoute> },
@@ -66,9 +74,12 @@ export default function App() {
 
   return (
     <>
-      <RouterProvider router={routes}></RouterProvider>
-      <ReactQueryDevtools initialIsOpen={false} />
       <ToastContainer></ToastContainer>
+      {/* <ReactQueryDevtools  initialIsOpen={false} /> */}
+      <DarkmodeContext>
+        <Darkmode></Darkmode>
+        <RouterProvider router={routes}></RouterProvider>
+      </DarkmodeContext>
     </>
   )
 }

@@ -5,9 +5,12 @@ import * as Yup from 'yup'
 import axios from 'axios';
 import LoadingRegister from '../Loading register/LoadingRegister';
 import { useNavigate } from 'react-router-dom';
+import useNoDark from '../../Hooks/useNoDark';
 
 
 export default function Register() {
+
+    let {noDark} = useNoDark();
 
     let [typed, setTyped] = useState({
         name: false,
@@ -129,18 +132,18 @@ export default function Register() {
                         <input type="text" className= {`form-control ${isNotValid('name')?'is-invalid':''}`} id="name" placeholder="name@example.com" onChange={inputChange} onFocus={formik.handleBlur} onBlur={inputBlur}/>                                                                                                                                                                                                                                                                                                                                                         
                         <label htmlFor="name">Username</label>
                     </div>
-                    {isNotValid('name') ? <div className="alert alert-danger z-3 py-2" role="alert">{formik.errors.name}</div> : ''}
+                    {isNotValid('name') ? <div className={`alert alert-danger z-3 py-2 ${noDark}`} role="alert">{formik.errors.name}</div> : ''}
 
                     <div className="form-floating mb-3">
                         <input type="email" className= {`form-control ${isNotValid('email')?'is-invalid':''}`} id="email" placeholder="name@example.com" onChange={inputChange} onFocus={formik.handleBlur} onBlur={inputBlur}/>
                         <label htmlFor="email">Email</label>
                     </div>
-                    {isNotValid('email') ? <div className="alert alert-danger z-3 py-2" role="alert">{formik.errors.email}</div> : ''}
+                    {isNotValid('email') ? <div className={`alert alert-danger z-3 py-2 ${noDark}`} role="alert">{formik.errors.email}</div> : ''}
 
                     <div className="form-floating mb-3">
                         <input type={`${eye.isMove?'text':'password'}`} className= {`form-control ${isNotValid('password')?'is-invalid':''}`} id="password" placeholder="name@example.com" onChange={inputChange} onFocus={formik.handleBlur} onBlur={inputBlur}/>
                         <label htmlFor="password">Password</label>
-                        <div className={`eye position-absolute rounded-pill p-1 ${eye.color}`}>
+                        <div className={`eye position-absolute rounded-pill p-1 ${eye.color} ${noDark}`}>
                             <span className=' d-inline-flex w-50 rounded-circle  xy-center' style={{height : '22.5px'}}>
                                 <i className="fa-solid fa-eye" />
                             </span>
@@ -150,12 +153,12 @@ export default function Register() {
                             <div className={` position-absolute bg-white rounded-circle ${eye.isMove&&'move'}`} style={{height : '22.5px'}} onClick={eyeMove}></div>
                         </div>
                     </div>
-                    {isNotValid('password') ? <div className="alert alert-danger z-3 py-2" role="alert">{formik.errors.password}</div> : ''}
+                    {isNotValid('password') ? <div className={`alert alert-danger z-3 py-2 ${noDark}`} role="alert">{formik.errors.password}</div> : ''}
 
                     <div className="form-floating mb-3">
                         <input type={`${eye.isMove?'text':'password'}`} className= {`form-control ${isNotValid('rePassword')?'is-invalid':''}`} id="rePassword" placeholder="name@example.com" onChange={inputChange} onFocus={formik.handleBlur} onBlur={inputBlur}/>
                         <label htmlFor="rePassword">Repassword</label>
-                        <div className={`eye position-absolute rounded-pill p-1 ${eye.color}`}>
+                        <div className={`eye position-absolute rounded-pill p-1 ${eye.color} ${noDark}`}>
                             <span className=' d-inline-flex w-50 rounded-circle  xy-center' style={{height : '22.5px'}}>
                                 <i className="fa-solid fa-eye" />
                             </span>
@@ -165,15 +168,15 @@ export default function Register() {
                             <div className={` position-absolute bg-white rounded-circle ${eye.isMove&&'move'}`} style={{height : '22.5px'}} onClick={eyeMove}></div>
                         </div>
                     </div>
-                    {isNotValid('rePassword') ? <div className="alert alert-danger z-3 py-2" role="alert">{formik.errors.rePassword}</div> : ''}
+                    {isNotValid('rePassword') ? <div className={`alert alert-danger z-3 py-2 ${noDark}`} role="alert">{formik.errors.rePassword}</div> : ''}
 
                     <div className="form-floating mb-3">
                         <input type="phone" className= {`form-control ${isNotValid('phone')?'is-invalid':''}`} id="phone" placeholder="name@example.com" onChange={inputChange} onFocus={formik.handleBlur} onBlur={inputBlur}/>
                         <label htmlFor="phone">Phone</label>
                     </div>
-                    {isNotValid('phone') ? <div className="alert alert-danger z-3 py-2" role="alert">{formik.errors.phone}</div> : ''}
+                    {isNotValid('phone') ? <div className={`alert alert-danger z-3 py-2 ${noDark}`} role="alert">{formik.errors.phone}</div> : ''}
 
-                    <button type='submit' className='btn text-capitalize d-block ms-auto'>register</button>
+                    <button type='submit' className={`btn text-capitalize d-block ms-auto ${noDark}`}>register</button>
                     
 
                     {(requestWarning.message)?<div className='request-warning w-50 bg-danger text-white fw-bold 

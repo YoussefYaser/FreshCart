@@ -1,0 +1,7 @@
+.dark-mode{
+    background-color: #fff;
+    mix-blend-mode: difference;
+    z-index: 5000;
+    pointer-events: none;
+}
+

@@ -5,8 +5,11 @@ import "slick-carousel/slick/slick-theme.css";
 import { getCategories } from "../../jsFunctions/Api/getCategories";
 import './Slider.css'
 import { Link } from "react-router-dom";
+import useNoDark from "../../Hooks/useNoDark";
 
 export default function CatSlider() {
+
+    let {noDark} = useNoDark();
 
     let { data: response, isSuccess } = useQueryCategories(getCategories);
 
@@ -57,7 +60,7 @@ export default function CatSlider() {
                 {response.data.map((elem) => <div key={elem._id} style={{ width: 300 }}>
                     <Link to={`/productsBy/categories/${elem._id}`} style={{color : 'black'}}>
                         <div className=" p-2">
-                            <img src={elem.image} className=" w-100 rounded" alt="" />
+                            <img src={elem.image} className={` w-100 rounded ${noDark}`} alt="" />
                         </div>
                     </Link>
                 </div>)}

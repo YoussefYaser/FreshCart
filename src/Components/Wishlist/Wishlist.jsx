@@ -7,12 +7,15 @@ import { useState } from "react";
 export default function Wishlist() {
 
     const [hideWishLogo] = useState(true);
+
     
     let {data : response, isLoading, isError, error} =  useQuery({
         queryKey : ['wishlist'], 
         queryFn : getWishlist, 
         select : (data)=>data.data
     });
+
+    
 
 
     if(isLoading){

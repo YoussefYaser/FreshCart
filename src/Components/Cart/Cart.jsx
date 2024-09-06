@@ -6,8 +6,11 @@ import ApiLoading from '../Api Loading/ApiLoading'
 import ProductInCart from '../ProductInCart/ProductInCart'
 import ModalPayment from '../Modal/Modal'
 import deleteCart from '../../jsFunctions/Api/deleteCart'
+import useNoDark from '../../Hooks/useNoDark'
 
 export default function Cart() {
+
+    let{noDark} = useNoDark();
 
     const queryClient = useQueryClient();
 
@@ -28,6 +31,7 @@ export default function Cart() {
             onSuccess : ()=>{
                 queryClient.invalidateQueries({queryKey : ['cart']});
             },
+            
             
         } 
     );
@@ -56,18 +60,18 @@ export default function Cart() {
                     <div className="container">
                         <div className=' fs-5'>
                             Number of cart items : 
-                            <p className='text-green d-inline-block fw-bold ms-3'>
-                                {response.numOfCartItems}
+                            <p className={`text-green d-inline-block fw-bold ms-3 ${noDark}`}>
+                                {response?.numOfCartItems}
                             </p>
                         </div>
                         <div className=' fs-5 mb-4'>
                             Total price :
-                            <p className='text-green d-inline-block fw-bold ms-3'>
-                                {response.data.totalCartPrice} EGP
+                            <p className={`text-green d-inline-block fw-bold ms-3 ${noDark}`}>
+                                {response?.data.totalCartPrice} EGP
                             </p>
                         </div>
-                        {response.data.products.length?
-                        <button className=' btn btn-danger position-relative z-0' onClick={()=>mutate()}>
+                        {response?.data.products.length?
+                        <button className={` btn btn-danger position-relative z-0 ${noDark}`} onClick={()=>mutate()}>
                             <span className={`${isPending || isFetching?'opacity-0':'opacity-1'}`}>
                                 Delete cart
                             </span>
@@ -86,13 +90,13 @@ export default function Cart() {
                             </thead>
 
                             <tbody className=' text-center'>
-                                {response.data.products.map((elem) => <ProductInCart key={elem.product._id} elem={elem} isFetching={isFetching} ></ProductInCart>)}
+                                {response?.data.products.map((elem) => <ProductInCart key={elem.product._id} elem={elem} isFetching={isFetching} ></ProductInCart>)}
 
                             </tbody>
                         </table>
                         <div className="payment mt-4">
-                            <ModalPayment button="online" cartId={response.cartId}></ModalPayment>
-                            <ModalPayment button="cash" cartId={response.cartId}></ModalPayment>
+                            <ModalPayment button="online" cartId={response?.cartId}></ModalPayment>
+                            <ModalPayment button="cash" cartId={response?.cartId}></ModalPayment>
                         </div>
                     </div>
                 </div>

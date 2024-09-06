@@ -5,7 +5,8 @@ export default function useQueryCategories(fn) {
         {
             queryKey : ['categories'], 
             queryFn : fn, 
-            select: (data) => data.data
+            select: (data) => data.data, 
+            
         }
     );
 }

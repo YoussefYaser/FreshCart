@@ -3,8 +3,11 @@ import './ProductInCart.css'
 import { removeProductCart } from '../../jsFunctions/Api/removeProductCar';
 import { useEffect, useState } from 'react';
 import { updateCartItem } from '../../jsFunctions/Api/updateCartItem';
+import useNoDark from '../../Hooks/useNoDark';
 
 export default function ProductInCart({ elem, isFetching }) {
+
+    let{noDark} = useNoDark();
 
     let [errorHide, setErrorHide] = useState(false);
     let [clickedRemove, setClickedRemove] = useState(false);
@@ -82,7 +85,7 @@ export default function ProductInCart({ elem, isFetching }) {
         <>
             <tr key={elem._id} className={`prod border border-2 border-start-0 border-end-0 border-top-0 border-black ${clickedRemove && !isErrorRemove && 'opacity-50'}`}>
                 <td className=' py-2 px-1 text-start'>
-                    <img src={elem.product.imageCover} className=' object-fit-cover rounded' alt="" />
+                    <img src={elem.product.imageCover} className={` object-fit-cover rounded ${noDark}`} alt="" />
                 </td>
                 <td className=' py-2 px-1 fs-4'>
                     <div className=' d-flex xy-center position-relative z-0'>
@@ -100,7 +103,7 @@ export default function ProductInCart({ elem, isFetching }) {
                 </td>
                 <td className=' py-2 px-1 fs-4'>{elem.price} EGP</td>
                 <td className=' py-2 px-1 fs-4'>
-                    <button className='btn btn-danger text-capitalize position-relative z-0' onClick={() => removeProduct(elem.product.id)}>
+                    <button className={`btn btn-danger text-capitalize position-relative z-0 ${noDark}`} onClick={() => removeProduct(elem.product.id)}>
                         <p className={` m-0 ${(pendingRemove || isFetching) && clickedRemove ? 'opacity-0' : 'opacity-1'}`}>
                             remove
                             <i className="fa-solid fa-trash ms-2" />

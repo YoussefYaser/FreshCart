@@ -5,14 +5,18 @@ import ApiLoading from '../Api Loading/ApiLoading';
 import ProductsItem from '../ProductsItem/ProductsItem';
 import useQueryCategories from '../../Hooks/useQueryCategories';
 import { getCategories } from '../../jsFunctions/Api/getCategories';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import useQueryBrands from '../../Hooks/useQueryBrands';
 import getBrands from '../../jsFunctions/Api/getBrands';
 import { useDispatch, useSelector } from 'react-redux';
 import { setActivate, setBrandActivetemp, setBrandId, setCatActivetemp, setCatId } from '../../libs/slices/productsSlice';
+import useNoDark from '../../Hooks/useNoDark';
+
 
 
 export default function Products() {
+
+    let {noDark} = useNoDark();
 
     let catIDtemp = useSelector((slice) => slice.products.catIdtemp);
     let brandIDtemp = useSelector((slice) => slice.products.brandIdtemp);
@@ -26,7 +30,11 @@ export default function Products() {
     let [catActive, setCatActive] = useState(catActivetemp);
     let [brandActive, setbrandActive] = useState(brandActivetemp);
 
+    let inputRef = useRef();
 
+
+
+    let [searchred, setSearched] = useState('');
     let [filter, setFilter] = useState(true);
 
 
@@ -52,16 +60,24 @@ export default function Products() {
         queryFn: ({ queryKey }) => {
             return getProductsBy(queryKey[1], queryKey[2]);
         },
-        select: (data) => data.data
+        select: (data) => {
+            if(searchred == '')
+                return data.data;
+            else{
+                let response = data.data;
+                return {data :response.data.filter((elem)=>elem.title.trim().toLowerCase().includes(searchred.trim().toLowerCase()))}
+                
+            }
+        }
     });
 
 
     let { data: categoriesResponse, isLoading: categoriesLoading, isError: categoriesIsError, error: categoriesError } = useQueryCategories(getCategories);
     let { data: brandsResponse, isLoading: brandsLoading, isError: brandsIsError, error: brandsError } = useQueryBrands(getBrands);
 
-    useEffect(()=>{
-        window.addEventListener('resize', function(){
-            if(this.innerWidth > 991){
+    useEffect(() => {
+        window.addEventListener('resize', function () {
+            if (this.innerWidth > 991) {
                 setFilter(true);
             }
         });
@@ -69,10 +85,10 @@ export default function Products() {
     }, []);
 
     useEffect(() => {
-        if(categoriesResponse && !activate.one) {            
+        if (categoriesResponse && !activate.one) {
             setCatActive(categoriesResponse.data.map((elem) => Boolean(!elem)));
             dispatch(setCatActivetemp(categoriesResponse.data.map((elem) => Boolean(!elem))));
-            dispatch(setActivate({...activate, one : true}));
+            dispatch(setActivate({ ...activate, one: true }));
         }
     }, [categoriesResponse]);
 
@@ -80,9 +96,14 @@ export default function Products() {
         if (brandsResponse && !activate.two) {
             setbrandActive(brandsResponse.data.map((elem) => Boolean(!elem)));
             dispatch(setBrandActivetemp(brandsResponse.data.map((elem) => Boolean(!elem))));
-            dispatch(setActivate({...activate, two : true}));
+            dispatch(setActivate({ ...activate, two: true }));
         }
     }, [brandsResponse]);
+
+    useEffect(()=>{
+        if(productsLoading)
+            setSearched('');
+    }, [productsLoading])
 
 
     if (productsLoading || categoriesLoading || brandsLoading) {
@@ -104,39 +125,44 @@ export default function Products() {
             return (
                 <section className='products py-5 position-relative'>
                     <div className="container-fluid ">
-                        <div className={`filter position-absolute top-0 start-0 h-100 ${!filter?'hide':''} `}>
-                            <div className={`filter-box ${filter?'overflow-y-scroll':''} position-sticky`}>
+                        <div className={`filter position-absolute top-0 start-0 h-100 ${!filter ? 'hide' : ''} `}>
+                            <div className={`filter-box ${filter ? 'overflow-y-scroll' : ''} position-sticky`}>
                                 <div className=' px-2 py-4'>
-                                    <div className='filter-bar d-flex flex-column justify-content-between mb-3 p-2 rounded d-lg-none' onClick={()=>setFilter(!filter)}>
+                                    <div className={`filter-bar d-flex flex-column justify-content-between mb-3 p-2 rounded d-lg-none ${noDark}`} onClick={() => setFilter(!filter)}>
                                         <span className=' w-50 rounded'></span>
                                         <span className=' w-75 rounded'></span>
                                         <span className=' w-100 rounded'></span>
                                     </div>
-                                    {filter?<ul className=' list-unstyled mb-5'>
+                                    {filter ? <ul className=' list-unstyled mb-5'>
                                         <h5 className=' text-capitalize mb-3'>categories</h5>
-                                        <li className={` mb-2 p-1 rounded ${catId ? '' : 'active'}`} onClick={() => { setCat(''); dispatch(setCatId('')); setCatActive(catActive.map(() => false)); dispatch(setCatActivetemp(catActivetemp.map(() => false))) }}>
+                                        <li className={` mb-2 p-1 rounded ${catId ? '' : `active ${noDark}`}`} onClick={() => { setCat(''); dispatch(setCatId('')); setCatActive(catActive.map(() => false)); dispatch(setCatActivetemp(catActivetemp.map(() => false))); }}>
                                             All
                                         </li>
                                         {categoriesResponse.data.map((elem, i) =>
-                                            <li key={elem._id} className={` mb-2 p-1 rounded ${catActive[i] ? 'active' : ''}`} onClick={() => { setCat(elem._id); dispatch(setCatId(elem._id)); setCatActive(catActive.map((elem, j) => j == i ? true : false)); dispatch(setCatActivetemp(catActivetemp.map((elem, j) => j == i ? true : false))) }}>
+                                            <li key={elem._id} className={` mb-2 p-1 rounded ${catActive[i] ? `active ${noDark}` : ''}`} onClick={() => { setCat(elem._id); dispatch(setCatId(elem._id)); setCatActive(catActive.map((elem, j) => j == i ? true : false)); dispatch(setCatActivetemp(catActivetemp.map((elem, j) => j == i ? true : false))) }}>
                                                 {elem.name}
                                             </li>)}
-                                    </ul>:''}
-                                    {filter?<ul className=' list-unstyled'>
+                                    </ul> : ''}
+                                    {filter ? <ul className=' list-unstyled'>
                                         <h5 className=' text-capitalize mb-3'>brands</h5>
-                                        <li className={` mb-2 p-1 rounded ${brandId ? '' : 'active'}`} onClick={() => { setBrand(''); dispatch(setBrandId('')); setbrandActive(brandActive.map(() => false)); dispatch(setBrandActivetemp(brandActivetemp.map(() => false))) }}>
+                                        <li className={` mb-2 p-1 rounded ${brandId ? '' : `active ${noDark}`}`} onClick={() => { setBrand(''); dispatch(setBrandId('')); setbrandActive(brandActive.map(() => false)); dispatch(setBrandActivetemp(brandActivetemp.map(() => false))) }}>
                                             All
                                         </li>
                                         {brandsResponse.data.map((elem, i) =>
-                                            <li key={elem._id} className={` mb-2 p-1 rounded ${brandActive[i] ? 'active' : ''} `} onClick={() => { setBrand(elem._id); dispatch(setBrandId(elem._id)); setbrandActive(brandActive.map((elem, j) => j == i ? true : false)); dispatch(setBrandActivetemp(brandActivetemp.map((elem, j) => j == i ? true : false))) }}>
+                                            <li key={elem._id} className={` mb-2 p-1 rounded ${brandActive[i] ? `active ${noDark}` : ''} `} onClick={() => { setBrand(elem._id); dispatch(setBrandId(elem._id)); setbrandActive(brandActive.map((elem, j) => j == i ? true : false)); dispatch(setBrandActivetemp(brandActivetemp.map((elem, j) => j == i ? true : false))) }}>
                                                 {elem.name}
                                             </li>)}
-                                    </ul>:''}
+                                    </ul> : ''}
                                 </div>
-                                
+
                             </div>
                         </div>
+
                         <div className="row g-4 justify-content-evenly">
+                            <div className={`search d-flex mb-5 align-items-center p-0 mx-auto ${noDark}`}>
+                                <input type="text" ref={inputRef} className='  form-control w-fit  flex-grow-1 rounded-0 ' />
+                                <button className='btn rounded-0' onClick={() => { setSearched(inputRef.current.value); }}>Search</button>
+                            </div>
                             {productsResponse.data.length ? productsResponse.data.map((elem) => <ProductsItem key={elem._id} prodItem={elem}></ProductsItem>) : 'No item in this categories'}
                         </div>
                     </div>
