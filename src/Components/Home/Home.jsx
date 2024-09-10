@@ -5,9 +5,7 @@ import './Home.css'
 
 export default function Home() {
 
-    function resetScroll(){
-        window.scrollTo(0, 0);
-    }
+    
 
     return (
         <section className='home px-sm-0 px-3 overflow-hidden'>
@@ -18,9 +16,7 @@ export default function Home() {
                 <FeaturedProducts></FeaturedProducts>
             </div>
 
-            <div className='reset-scroll bg-danger position-fixed d-flex xy-center bg-black text-white rounded-circle' onClick={resetScroll}>
-                <i className="fa-solid fa-up-long" />
-            </div>
+            
         </section>
     )
 }

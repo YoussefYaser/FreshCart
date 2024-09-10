@@ -3,7 +3,7 @@ import instagram from '../../assets/instagram logo.png'
 import tiktok from '../../assets/TikTok logo.png'
 import './NavBar.css'
 import { Link, NavLink, useNavigate } from 'react-router-dom';
-import { useContext, useEffect, useRef, useState } from 'react';
+import { memo, useContext, useEffect, useRef, useState } from 'react';
 import { authentication } from '../../Context/Authentication/AuthenticationContext';
 import LoadingRegister from '../Loading register/LoadingRegister';
 import { jwtDecode } from 'jwt-decode';
@@ -13,7 +13,7 @@ import useNoDark from '../../Hooks/useNoDark';
 
 
 
-export default function NavBar() {
+function NavBar() {
 
     let { noDark } = useNoDark();
 
@@ -183,3 +183,5 @@ export default function NavBar() {
 
     )
 }
+
+export default memo(NavBar);

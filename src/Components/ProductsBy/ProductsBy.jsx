@@ -5,10 +5,12 @@ import { useParams } from "react-router-dom";
 import ProductsItem from "../ProductsItem/ProductsItem";
 import './ProductsBy.css'
 import { useRef, useState } from "react";
+import useNoDark from "../../Hooks/useNoDark";
 
 export default function ProductsBy() {
 
-
+    let {noDark} = useNoDark();
+    
     let [searchred, setSearched] = useState('');
     
     
@@ -58,15 +60,15 @@ export default function ProductsBy() {
         }
         else {
             return (
-                <section className="productsBy py-5">
+                <section className="productsBy py-5 px-2 px-sm-0 overflow-x-hidden">
                     <div className="container">
-                        {response.data.length?<div className='search d-flex mb-5 align-items-center flex-wrap flex-sm-nowrap '>
-                            <input type="text" ref={inputRef} className='  form-control w-fit  flex-grow-1 rounded-0 ' />
+                        {response.data.length?<div className={`search d-flex mb-5 align-items-center flex-wrap flex-sm-nowrap ${noDark}`}>
+                            <input type="text" ref={inputRef} className={`  form-control w-fit  flex-grow-1 rounded-0  `} />
                             <button className='btn rounded-0 h-100 ' onClick={()=>{setSearched(inputRef.current.value); }}>Search</button>
                         </div>:''}
                         
 
-                        <div className="row g-4">
+                        <div className="row g-5">
                             {!response.data.length ? <p className=" text-center">No product found</p> : response.data.map((elem) => {
                                 return <ProductsItem key={elem._id} prodItem={elem}></ProductsItem>
                             })}

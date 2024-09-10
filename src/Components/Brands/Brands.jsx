@@ -63,7 +63,7 @@ export default function Brands() {
                     <div className="container">
                     <h2 className='h1 text-center text-capitalize mb-5'>brands</h2>
                         <div className="row g-5">
-                            {response.data.map((elem, i) => <div key={elem._id} className=" col-lg-4 col-md-6">
+                            {response.data.map((elem, i) => <div key={elem._id} className=" col-lg-4 col-sm-6">
                                 <Link  to={`/productsBy/brands/${elem._id}`} style={{color : 'black'}}>
                                     <div className="inner shadow rounded overflow-hidden" ref={l => catRef.current[i] = l} style={{ opacity: '0', transform : 'translateY(40px)' }}>
                                         <img src={elem.image} className=' w-100 object-fit-cover' alt="" />

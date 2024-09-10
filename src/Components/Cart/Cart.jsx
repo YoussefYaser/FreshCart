@@ -28,7 +28,7 @@ export default function Cart() {
     let {mutate, isPending} = useMutation(
         {
             mutationFn : deleteCart, 
-            onSuccess : ()=>{
+            onSuccess : ()=>{                
                 queryClient.invalidateQueries({queryKey : ['cart']});
             },
             

@@ -5,8 +5,9 @@ import payPal from '../../assets/PayPal-Logo.jpg'
 import appStore from '../../assets/app-store.jpg'
 import playStore from '../../assets/play-store.png'
 import useNoDark from '../../Hooks/useNoDark'
+import { memo } from 'react'
 
-export default function Footer() {
+function Footer() {
 
     let {noDark} = useNoDark();
 
@@ -46,3 +47,5 @@ export default function Footer() {
         </footer>
     )
 }
+
+export default memo(Footer)

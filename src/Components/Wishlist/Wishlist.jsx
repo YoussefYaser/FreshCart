@@ -33,7 +33,7 @@ export default function Wishlist() {
         }
         else{
             return (
-                <section className=" wishlist py-5">
+                <section className=" wishlist py-5 overflow-x-hidden px-2 px-sm-0">
                     <div className="container">
                         <h2 className=" text-capitalize text-center mb-4">your wishlist</h2>
                         <div className="row g-5">

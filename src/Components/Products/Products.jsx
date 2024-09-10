@@ -158,7 +158,7 @@ export default function Products() {
                             </div>
                         </div>
 
-                        <div className="row g-4 justify-content-evenly">
+                        <div className="row g-4 justify-content-evenly overflow-hidden">
                             <div className={`search d-flex mb-5 align-items-center p-0 mx-auto ${noDark}`}>
                                 <input type="text" ref={inputRef} className='  form-control w-fit  flex-grow-1 rounded-0 ' />
                                 <button className='btn rounded-0' onClick={() => { setSearched(inputRef.current.value); }}>Search</button>
